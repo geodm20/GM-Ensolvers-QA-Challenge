@@ -6,7 +6,7 @@ test.beforeEach(async ({page}) => {
     await page.goto('/');
     const loginPage = new Login(page);
     await loginPage.signIn("user", "user");
-    expect(loginPage.isLoggedOut).toBeTruthy();
+    expect(loginPage.isLoggedIn).toBeTruthy();
 });
 
 test("TC02: Folder and to-do items creation.", async ({page}) => {
@@ -21,4 +21,21 @@ test("TC02: Folder and to-do items creation.", async ({page}) => {
 
     await toDoItemPage.createNote2("B", "2");
     expect(toDoItemPage.verifyNoteCreation()).toBeTruthy();
+});
+
+test("TC03: Folder management (view, edit and delete).", async({page}) => {
+    const folderPage = new todoItemsAndFolder(page);
+    await folderPage.goToManageFolders();
+
+    const folderName = 'Folder 1';
+    await folderPage.createNewFolder(folderName);
+    await folderPage.viewFolder();
+    expect(await folderPage.verifyFolderName()).toBe(folderName);
+
+    const newFolderName = 'Folder 2';
+    await folderPage.editFolder(newFolderName);
+    expect(await folderPage.verifyFolderEdition()).toBe(newFolderName);
+
+    await folderPage.deleteFolder();
+    expect(await folderPage.verifyFolderDeletion()).toBeTruthy();
 });

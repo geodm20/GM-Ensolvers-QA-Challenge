@@ -16,6 +16,13 @@ export class todoItemsAndFolder {
     readonly createAlert: Locator;
     public folderValue: string;
     readonly refreshButton: Locator;
+    readonly viewFolderButton: Locator;
+    readonly folderViewCard: Locator;
+    readonly editFolderButton: Locator;
+    readonly folderNameCell: Locator;
+    readonly deleteFolderButton: Locator;
+    readonly deleteFolderConfirmButton: Locator;
+    readonly noFoldersFound: Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -33,6 +40,13 @@ export class todoItemsAndFolder {
         this.createAlert = page.locator(".Toastify__toast.Toastify__toast--success.toastify-toast");
         this.folderValue = '';
         this.refreshButton = page.getByRole('button', { name: /Refresh List/i });
+        this.viewFolderButton = page.locator("[data-cy='entityDetailsButton']");
+        this.folderViewCard = page.locator('dl.jh-entity-details dt:has(span#name) + dd');
+        this.editFolderButton = page.getByRole("link", {name: "Edit"});
+        this.folderNameCell = page.locator('[data-cy="entityTable"]').getByText('Folder 2');
+        this.deleteFolderButton = page.locator("[data-cy='entityDeleteButton']");
+        this.deleteFolderConfirmButton = page.locator("[data-cy='entityConfirmDeleteButton']");
+        this.noFoldersFound = page.locator(".alert.alert-warning").getByText("No Folders found");
     }
 
     async goToManageFolders() {
@@ -61,13 +75,13 @@ export class todoItemsAndFolder {
         await this.createToDoItemButton.click();
 
         await this.toDoItemTitle.fill(title);
-        // await this.page.waitForTimeout(700);
+        await this.page.waitForTimeout(700);
 
         await this.toDoItemDescription.fill(description);
-        // await this.page.waitForTimeout(700);
+        await this.page.waitForTimeout(700);
 
         await this.toDoItemFolder.selectOption(this.folderValue);
-        // await this.page.waitForTimeout(700);
+        await this.page.waitForTimeout(700);
 
         await this.toDoSaveButton.click();
         await this.refreshButton.click();
@@ -91,5 +105,36 @@ export class todoItemsAndFolder {
 
     async verifyNoteCreation() {
         return this.createAlert;
+    }
+
+    async viewFolder() {
+        await this.viewFolderButton.click();
+    }
+
+    async verifyFolderName() {
+        return await this.folderViewCard.textContent();
+    }
+
+    async editFolder(newFolderName: string) {
+        await this.editFolderButton.click();
+        await this.page.waitForTimeout(300);
+        await this.folderNameInput.fill(newFolderName);
+        await this.page.waitForTimeout(300);
+        await this.saveFolderButton.click();
+    }
+
+    async verifyFolderEdition() {
+        return await this.folderNameCell.textContent();
+    }
+
+    async deleteFolder() {
+        await this.deleteFolderButton.click();
+        await this.page.waitForTimeout(300);
+        await this.deleteFolderConfirmButton.click();
+        await this.page.waitForTimeout(300);
+    }
+
+    async verifyFolderDeletion() {
+        if (this.noFoldersFound) return true;
     }
 }
