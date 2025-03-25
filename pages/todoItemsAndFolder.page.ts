@@ -20,8 +20,8 @@ export class todoItemsAndFolder {
     readonly folderViewCard: Locator;
     readonly editFolderButton: Locator;
     readonly folderNameCell: Locator;
-    readonly deleteFolderButton: Locator;
-    readonly deleteFolderConfirmButton: Locator;
+    readonly deleteFolderOrItemButton: Locator;
+    readonly deleteFolderOrItemConfirmButton: Locator;
     readonly noFoldersFound: Locator;
 
     constructor(page: Page) {
@@ -44,8 +44,8 @@ export class todoItemsAndFolder {
         this.folderViewCard = page.locator('dl.jh-entity-details dt:has(span#name) + dd');
         this.editFolderButton = page.getByRole("link", {name: "Edit"});
         this.folderNameCell = page.locator('[data-cy="entityTable"]').getByText('Folder 2');
-        this.deleteFolderButton = page.locator("[data-cy='entityDeleteButton']");
-        this.deleteFolderConfirmButton = page.locator("[data-cy='entityConfirmDeleteButton']");
+        this.deleteFolderOrItemButton= page.locator("[data-cy='entityDeleteButton']");
+        this.deleteFolderOrItemConfirmButton = page.locator("[data-cy='entityConfirmDeleteButton']");
         this.noFoldersFound = page.locator(".alert.alert-warning").getByText("No Folders found");
     }
 
@@ -104,10 +104,10 @@ export class todoItemsAndFolder {
     }
 
     async verifyNoteCreation() {
-        return this.createAlert;
+        if (this.createAlert) return true;
     }
 
-    async viewFolder() {
+    async viewFolderOrItem() {
         await this.viewFolderButton.click();
     }
 
@@ -127,14 +127,24 @@ export class todoItemsAndFolder {
         return await this.folderNameCell.textContent();
     }
 
-    async deleteFolder() {
-        await this.deleteFolderButton.click();
+    async deleteFolderOrItem() {
+        await this.deleteFolderOrItemButton.click();
         await this.page.waitForTimeout(300);
-        await this.deleteFolderConfirmButton.click();
+        await this.deleteFolderOrItemConfirmButton.click();
         await this.page.waitForTimeout(300);
     }
 
-    async verifyFolderDeletion() {
+    async verifyFolderOrItemDeletion() {
         if (this.noFoldersFound) return true;
+    }
+
+    async editItem(newItemName: string, newDescription: string) {
+        await this.editFolderButton.click();
+        await this.page.waitForTimeout(300);
+        await this.toDoItemTitle.fill(newItemName);
+        await this.page.waitForTimeout(300);
+        await this.toDoItemDescription.fill(newDescription);
+        await this.page.waitForTimeout(300);
+        await this.saveFolderButton.click();
     }
 }
