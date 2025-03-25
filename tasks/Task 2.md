@@ -64,4 +64,24 @@ Browser: Google Chrome, version 134.0.6998.118
 #### Severity:
 Medium
 #### Priority:
-Priority
+High
+
+### Bug ID: BUG-04
+#### Title: Folder Dropdown Displays ID Instead of Folder Name
+#### Description: 
+When creating or editing a to-do item, the folder dropdown only displays the folder's numeric ID instead of the folder name, which causes confusion for users selecting the appropriate folder.
+#### Steps to Reproduce:
+1. Log in to the application.
+2. Navigate to the Create or Edit To-Do Item screen.
+3. Open the folder selection dropdown.
+4. Observe that the dropdown options display only numeric IDs (e.g., "32") rather than descriptive folder names (e.g., "Folder 1").
+#### Expected Result:
+The folder dropdown should display the folder name (e.g., "Folder 1") to clearly indicate which folder is being selected.
+#### Actual Result:
+The dropdown displays only the folder ID, making it difficult for users to identify the correct folder.
+#### Environment and version:
+Browser: Google Chrome, version 134.0.6998.118
+#### Severity:
+Medium
+#### Priority:
+High
