@@ -20,7 +20,7 @@
 1. Click on the "Manage Folders" button.
 2. Click on 'Create new Folder' button.
 3. Fill the name input with "Folder 1" and click on the "Save" button.
-4. Click on the "Ensolvers" title and then click on "Manage To-Do Items" button.
+4. Click on the "Manage lists" menu and then click on "To-Do Items" option.
 5. Click on "Create new To-Do Item" button.
 6. Fill the title and description, and select Folder 1; then clik on the Save button.
 7. Repeat steps 6 and 7, but do not select any folder.
